@@ -1,0 +1,104 @@
+{
+  "quiz": [
+    {
+      "question": "1. What is the primary programming language used for Android development?",
+      "options": [
+        "Java",
+        "Swift",
+        "Python",
+        "Ruby"
+      ],
+      "answer": "Java"
+    },
+    {
+      "question": "2. Which Jetpack library provides a set of components and tools to build modern Android apps?",
+      "options": [
+        "Jetpack Compose",
+        "Jetpack Navigation",
+        "Jetpack WorkManager",
+        "Jetpack DataStore"
+      ],
+      "answer": "Jetpack Compose"
+    },
+    {
+      "question": "3. What is the function of the 'val' keyword in Kotlin?",
+      "options": [
+        "To define a mutable variable",
+        "To define a function",
+        "To define an immutable variable",
+        "To define a class"
+      ],
+      "answer": "To define an immutable variable"
+    },
+    {
+      "question": "4. In Jetpack Compose, which function is used to define a composable function?",
+      "options": [
+        "@Composable",
+        "@ComposableFunction",
+        "@Compose",
+        "@JetpackCompose"
+      ],
+      "answer": "@Composable"
+    },
+    {
+      "question": "5. Which Android component is primarily responsible for handling background tasks?",
+      "options": [
+        "Activity",
+        "Service",
+        "BroadcastReceiver",
+        "ContentProvider"
+      ],
+      "answer": "Service"
+    },
+    {
+      "question": "6. What is the entry point for a Kotlin Android application?",
+      "options": [
+        "main.kt",
+        "MainActivity",
+        "onCreate",
+        "Application"
+      ],
+      "answer": "MainActivity"
+    },
+    {
+      "question": "7. Which function in an Activity is used to start another Activity?",
+      "options": [
+        "startActivityForResult",
+        "startActivity",
+        "onActivityResult",
+        "onStart"
+      ],
+      "answer": "startActivity"
+    },
+    {
+      "question": "8. What is the purpose of the 'suspend' modifier in Kotlin?",
+      "options": [
+        "To define an immutable variable",
+        "To declare a function as nullable",
+        "To define a class",
+        "To mark a function as suspendable"
+      ],
+      "answer": "To mark a function as suspendable"
+    },
+    {
+      "question": "9. Which Jetpack Compose function is used to manage state in a composable function?",
+      "options": [
+        "remember",
+        "state",
+        "observe",
+        "LiveData"
+      ],
+      "answer": "remember"
+    },
+    {
+      "question": "10. What is the default scope for coroutines launched in an Android ViewModel?",
+      "options": [
+        "GlobalScope",
+        "MainScope",
+        "viewModelScope",
+        "IO"
+      ],
+      "answer": "viewModelScope"
+    }
+  ]
+}
