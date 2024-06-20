@@ -14,18 +14,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,116 +53,151 @@ fun HomeScreen(viewModel: QuizViewModel) {
         Spacer(modifier = Modifier.height(32.dp))
         CircularProgressWithTimer(viewModel = viewModel)
 
-        Spacer(modifier = Modifier.height(48.dp))
-        MiddleSection()
-
         Spacer(modifier = Modifier.height(32.dp))
-        BottomSection()
+        MiddleSection(viewModel = viewModel)
+
     }
 }
 
-@Composable
-fun BottomSection() {
-    Row(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Previous")
-        }
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Next", modifier = Modifier.padding(horizontal = 20.dp))
-        }
-    }
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun MiddleSection() {
-    var question by remember { mutableStateOf("Question?") }
-    var option1 by remember { mutableStateOf("Option1") }
-    var option2 by remember { mutableStateOf("Option2") }
-    var option3 by remember { mutableStateOf("Option3") }
-    var option4 by remember { mutableStateOf("Option4") }
-    Text(
-        text = question,
-        modifier = Modifier.padding(8.dp),
-        style = TextStyle(
-            fontSize = 20.sp, fontWeight = FontWeight.SemiBold
-        ),
+fun MiddleSection(viewModel: QuizViewModel) {
 
-        )
-    Spacer(modifier = Modifier.height(24.dp))
-    Row {
-        Card(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 32.dp),
-            colors = CardDefaults.cardColors(
-                contentColor = Color.Gray
-            ),
-            elevation = CardDefaults.cardElevation(
-                focusedElevation = 5.dp, pressedElevation = 10.dp
-            )
-
-        ) {
-            Text(
-                text = option1,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-        }
-        Spacer(modifier = Modifier.width(32.dp))
-
-        Card(
-            onClick = { /*TODO*/ }, modifier = Modifier
-                .weight(1f)
-                .padding(end = 32.dp)
-        ) {
-            Text(
-                text = option2,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-        }
+    val questions by remember {
+        viewModel.questionList
     }
 
-    Spacer(modifier = Modifier.height(16.dp))
-    Row {
-        Card(
-            onClick = { /*TODO*/ },
+    var currentQuestion by remember {
+        mutableIntStateOf(0)
+    }
+
+    Column(
+        modifier = Modifier.wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
             modifier = Modifier
-                .weight(1f)
-                .padding(start = 32.dp),
+                .fillMaxWidth()
+                .height(110.dp)
+                .padding(start = 16.dp)
+        ) {
+            Text(
+                text = questions[currentQuestion].question,
+                modifier = Modifier.padding(8.dp),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.W400
+                )
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                onClick = { viewModel.showAnswer.value = true },
+                modifier = Modifier.padding(start = 24.dp, end = 8.dp),
+
+                ) {
+                Text(
+                    text = questions[currentQuestion].options.get(0),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                onClick = { viewModel.showAnswer.value = true },
+                modifier = Modifier
+                    .padding(start = 24.dp, end = 8.dp)
+            ) {
+                Text(
+                    text = questions[currentQuestion].options.get(1),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                onClick = { viewModel.showAnswer.value = true },
+                modifier = Modifier
+                    .padding(start = 24.dp, end = 8.dp)
 
             ) {
-            Text(
-                text = option1,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-        }
-        Spacer(modifier = Modifier.width(32.dp))
+                Text(
+                    text = questions[currentQuestion].options.get(2),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Card(
-            onClick = { /*TODO*/ }, modifier = Modifier
-                .weight(1f)
-                .padding(end = 32.dp)
-        ) {
-            Text(
-                text = option2,
+            Card(
+                onClick = { viewModel.showAnswer.value = true },
                 modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+                    .padding(start = 24.dp, end = 8.dp)
+            ) {
+                Text(
+                    text = questions[currentQuestion].options.get(3),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Row(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Button(
+                onClick = {
+                    if (currentQuestion > 0) currentQuestion -= 1
+                    else currentQuestion = (questions.size - 1)
+                    viewModel.showAnswer.value = false
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.DarkGray,
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Previous")
+            }
+            Button(
+                onClick = {
+                    if (currentQuestion < questions.size - 1) currentQuestion += 1
+                    else currentQuestion = 0
+                    viewModel.showAnswer.value = false
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.DarkGray,
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Next", modifier = Modifier.padding(horizontal = 20.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        if (viewModel.showAnswer.value) {
+            UpdateAnswer(answer = questions[currentQuestion].answer)
         }
     }
+}
+
+@Composable
+fun UpdateAnswer(answer:String) {
+    Text(text = "Correct answer: $answer", fontWeight = FontWeight.W500, modifier = Modifier.padding(8.dp))
 }
 
 @Composable
@@ -170,7 +205,7 @@ fun Header(modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(100.dp)
             .background(
                 color = colorResource(id = R.color.background),
                 shape = RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp)
@@ -196,7 +231,7 @@ fun CircularProgressWithTimer(viewModel: QuizViewModel, totalTime: Int = 600) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.size(100.dp)) {
         CircularProgressIndicator(
             progress = progress,
-            color = Color.Blue,
+            color = Color.DarkGray,
             strokeWidth = 10.dp,
             modifier = Modifier.size(100.dp)
         )
@@ -215,7 +250,7 @@ fun CircularProgressWithTimer(viewModel: QuizViewModel, totalTime: Int = 600) {
                 modifier = Modifier.padding(horizontal = 2.dp)
             )
             Text(
-                text = timeLeftInSec.toString(),
+                text = if (timeLeftInSec < 10) "0$timeLeftInSec" else timeLeftInSec.toString(),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
