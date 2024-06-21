@@ -13,9 +13,7 @@ class MainActivity : ComponentActivity() {
         val viewModel: QuizViewModel by viewModels { factory }
         setContent {
             QuizyTheme {
-
-                HomeScreen(viewModel)
-//                CircularProgressWithTimer(viewModel = viewModel)
+                Navigation(viewModel = viewModel)
             }
         }
     }

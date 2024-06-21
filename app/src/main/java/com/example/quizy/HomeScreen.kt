@@ -37,9 +37,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen(viewModel: QuizViewModel) {
+fun HomeScreen(viewModel: QuizViewModel,navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +55,7 @@ fun HomeScreen(viewModel: QuizViewModel) {
         CircularProgressWithTimer(viewModel = viewModel)
 
         Spacer(modifier = Modifier.height(32.dp))
-        MiddleSection(viewModel = viewModel)
+        MiddleSection(viewModel = viewModel, navController = navController)
 
     }
 }
@@ -62,14 +63,14 @@ fun HomeScreen(viewModel: QuizViewModel) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun MiddleSection(viewModel: QuizViewModel) {
+fun MiddleSection(viewModel: QuizViewModel,navController: NavController) {
 
     val questions by remember {
         viewModel.questionList
     }
 
     var currentQuestion by remember {
-        mutableIntStateOf(0)
+        viewModel.currentQuestion
     }
 
     Column(
@@ -95,7 +96,14 @@ fun MiddleSection(viewModel: QuizViewModel) {
 
         Column(modifier = Modifier.fillMaxWidth()) {
             Card(
-                onClick = { viewModel.showAnswer.value = true },
+                onClick = {
+//                    viewModel.showAnswer.value = true
+                    if (questions[currentQuestion].options.get(0)==questions[currentQuestion].answer){
+                        viewModel.score.value += 1
+                    }
+                    if (currentQuestion < questions.size - 1) currentQuestion += 1
+                    else navController.navigate(Screen.FinalScreen.route)
+                          },
                 modifier = Modifier.padding(start = 24.dp, end = 8.dp),
 
                 ) {
@@ -110,7 +118,13 @@ fun MiddleSection(viewModel: QuizViewModel) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Card(
-                onClick = { viewModel.showAnswer.value = true },
+                onClick = {
+                    if (questions[currentQuestion].options.get(1)==questions[currentQuestion].answer){
+                        viewModel.score.value += 1
+                    }
+                    if (currentQuestion < questions.size - 1) currentQuestion += 1
+                    else navController.navigate(Screen.FinalScreen.route)
+                          },
                 modifier = Modifier
                     .padding(start = 24.dp, end = 8.dp)
             ) {
@@ -125,7 +139,13 @@ fun MiddleSection(viewModel: QuizViewModel) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Card(
-                onClick = { viewModel.showAnswer.value = true },
+                onClick = {
+                    if (questions[currentQuestion].options.get(2)==questions[currentQuestion].answer){
+                        viewModel.score.value += 1
+                    }
+                    if (currentQuestion < questions.size - 1) currentQuestion += 1
+                    else navController.navigate(Screen.FinalScreen.route)
+                          },
                 modifier = Modifier
                     .padding(start = 24.dp, end = 8.dp)
 
@@ -140,7 +160,13 @@ fun MiddleSection(viewModel: QuizViewModel) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Card(
-                onClick = { viewModel.showAnswer.value = true },
+                onClick = {
+                    if (questions[currentQuestion].options.get(3)==questions[currentQuestion].answer){
+                        viewModel.score.value += 1
+                    }
+                    if (currentQuestion < questions.size - 1) currentQuestion += 1
+                    else navController.navigate(Screen.FinalScreen.route)
+                          },
                 modifier = Modifier
                     .padding(start = 24.dp, end = 8.dp)
             ) {
@@ -162,21 +188,8 @@ fun MiddleSection(viewModel: QuizViewModel) {
         ) {
             Button(
                 onClick = {
-                    if (currentQuestion > 0) currentQuestion -= 1
-                    else currentQuestion = (questions.size - 1)
-                    viewModel.showAnswer.value = false
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.DarkGray,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Previous")
-            }
-            Button(
-                onClick = {
                     if (currentQuestion < questions.size - 1) currentQuestion += 1
-                    else currentQuestion = 0
+                    else navController.navigate(Screen.FinalScreen.route)
                     viewModel.showAnswer.value = false
                 },
                 colors = ButtonDefaults.buttonColors(
