@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,8 @@ class QuizViewModel(private val applicationContext: Application): ViewModel() {
     val score = mutableStateOf(0)
     val currentQuestion = mutableIntStateOf(0)
 
+    private var timerJob: Job? = null
+
     init {
         viewModelScope.launch {
             val jsonString = readJsonFromAssets(applicationContext,"Question.json")
@@ -36,7 +39,8 @@ class QuizViewModel(private val applicationContext: Application): ViewModel() {
     }
 
     private fun startTimer() {
-        viewModelScope.launch {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
             while (_timeLeftInMin.value > 0 || _timeLeftInSec.value > 0) {
                 if(timeLeftInSec.value < 0){
                     _timeLeftInMin.value -= 1
